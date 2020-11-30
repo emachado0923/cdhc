@@ -1,0 +1,52 @@
+{% extends 'base/base.html' %}
+{% block content %}
+    <body>
+    <div class="d-flex justify-content-center mt-3 pa-5 ">
+        <div class="card text-center w-50">
+            <div class="card-header">
+                <strong>Iniciar Sesión</strong>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Habitat y Construcción</h5>
+                <p class="card-text">Inicia sesión para continuar con el formulario</p>
+
+                <div class="btn-group btn-lg">
+                    <a class='btn btn-primary disabled'>
+                        <i class="fa fa-facebook" style="width:16px; height:20px"></i>
+                    </a>
+                    <a class='btn btn-primary ' href="{% url 'social:begin' 'facebook' %}" style="width:12em">
+                        Iniciar sesión con facebook
+                    </a>
+                </div>
+                <br/><br/>
+
+                <!--
+                <button>Get External Content</button>
+                <div class="btn-group btn-lg">
+                    <a class='btn btn-danger disabled'>
+                        <i class="fa fa-google-plus" style="width:20px; height:40px"></i>
+                    </a>
+                    <a class='btn btn-danger' href='{% url 'social:begin' 'google' %}' style="width:12em;">
+                        Iniciar sesión con Google
+                    </a>
+                </div>
+                <br/><br/>
+                <div class="btn-group btn-lg">
+                    <a class='btn btn-info disabled'>
+                        <i class="fa fa-instagram" style="width:16px; height:20px"></i>
+                    </a>
+                    <a class='btn btn-info' href='{% url 'social:begin' 'instagram' %}' style="width:12em">
+                        Iniciar sesión con Instagram
+                    </a>
+                </div>
+            -->
+            </div>
+            <div class="card-footer text-muted">
+                <strong id="fechaActual"></strong>
+            </div>
+        </div>
+    </div>
+    </body>
+{% endblock %}
+
+

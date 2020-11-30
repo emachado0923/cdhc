@@ -1,0 +1,34 @@
+{% extends 'base/base.html' %}
+{% block content %}
+    <body>
+    <div class="d-flex justify-content-center mt-3 pa-5 ">
+        <div class="card text-center w-50">
+            <div class="card-header">
+                <strong>Iniciar Sesión</strong>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Habitat y Construcción</h5>
+                <p class="card-text">Administrador</p>
+                <form action="{% url 'api:login' %}" method="post">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Nombre usuario" name="username" value=""/>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" placeholder="Contraseña" name="password" value=""/>
+                    </div>
+
+                    <Button class="btn btn-success" type="submit">Ingresar</Button>
+
+                </form>
+            </div>
+            <div class="card-footer text-muted">
+                <strong id="fechaActual"></strong>
+            </div>
+        </div>
+    </div>
+    </body>
+{% endblock %}
+
+

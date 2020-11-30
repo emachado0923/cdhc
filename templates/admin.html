@@ -1,0 +1,276 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>H&B</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/darkly/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'scripts/notifications/notifications.css' %}">
+    <script src="{% static 'scripts/notifications/notifications.js' %}"></script>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+</head>
+<body>
+{% include 'navbar/navbar.html' %}
+<div class="d-flex justify-content-center mt-3 pa-5 ">
+    <div class="card text-center w-50">
+        <div class="card-header d-flex justify-content-between">
+            <h3>
+                Campañas
+            </h3>
+
+            <button type="button" class="btn btn-primary" id="ButtonModal"
+                    data-toggle="modal"
+                    data-target="#exampleModal">
+                <i class="fa fa-plus"></i>
+            </button>
+        </div>
+        <div class="card-body">
+
+            <div class="col" id="Habilitados">
+                <strong>Habilitados</strong>
+                <table class="table" id="table_id">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Nombre Campaña</th>
+                        <th scope="col">Url Formulario</th>
+                        <th scope="col">Url Resultados</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                    </thead>
+                    <!--Registros de la tabla-->
+                    <tbody id="results">
+                    {% if object_list %}
+                        {% for data in object_list %}
+                            {% if data.estado %}
+                                <tr>
+                                    <td><strong>{{ data.nombreFormulario }}</strong></td>
+                                    <td>
+                                        <a href="{{ data.urlFormulario }}" class="btn btn-warning btn-lg active"
+                                           role="button"
+                                           aria-pressed="true" data-toggle="tooltip" data-placement="right"
+                                           title="Ir al formulario"><i class="fa fa-eye"></i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ data.urlRespuestas }}" class="btn btn-success btn-lg active"
+                                           role="button"
+                                           aria-pressed="true" data-toggle="tooltip" data-placement="right"
+                                           title="Ver Resultados"><i class="fa fa-table"></i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-outline-info btn-lg" id="BtnEditar"
+                                                value="{{ data.pk }}">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                        &nbsp;
+                                        <button class="btn btn-outline-danger btn-lg" id="BtnInhablitar"
+                                                onclick="Inhabilitar({{ data.pk }});">
+                                            <i class="fa fa-trash-o"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <div class="alert alert-info" role="alert">
+                            Lista Vacia
+                        </div>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col" id="Inhabilitados">
+                <strong>Inhabilitados</strong>
+                <table class="table" id="table_id">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Nombre Campaña</th>
+                        <th scope="col">Url Formulario</th>
+                        <th scope="col">Url Resultados</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                    </thead>
+                    <!--Registros de la tabla-->
+                    <tbody id="results">
+                    {% if object_list %}
+                        {% for data in object_list %}
+                            {% if data.estado == 0 %}
+                                <tr>
+                                    <td><strong>{{ data.nombreFormulario }}</strong></td>
+                                    <td>
+                                        <a href="{{ data.urlFormulario }}" class="btn btn-warning btn-lg active"
+                                           role="button"
+                                           aria-pressed="true" data-toggle="tooltip" data-placement="right"
+                                           title="Ir al formulario"><i class="fa fa-eye"></i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ data.urlRespuestas }}" class="btn btn-success btn-lg active"
+                                           role="button"
+                                           aria-pressed="true" data-toggle="tooltip" data-placement="right"
+                                           title="Ver Resultados"><i class="fa fa-table"></i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-outline-info btn-lg" id="BtnEditar"
+                                                value="{{ data.pk }}">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                        &nbsp;
+                                        <button class="btn btn-outline-danger btn-lg" id="BtnInhablitar"
+                                                onclick="Inhabilitar({{ data.pk }});">
+                                            <i class="fa fa-trash-o"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <div class="alert alert-info" role="alert">
+                            Lista Vacia
+                        </div>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="card-footer text-muted">
+            <a onclick="CambioPestaña('Habilitados')" class="btn btn-success">Activos</a>
+            <a onclick="CambioPestaña('Inhabilitados')" class="btn btn-info">Inactivos</a>
+            <strong id="fechaActual"></strong>
+        </div>
+    </div>
+</div>
+<!--Modal Registro-->
+{% include 'forms/formulario.html' %}
+
+</body>
+
+<script src="{% static 'scripts/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'bootstrap/js/popper.min.js' %}"></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+<script>
+
+    $(window).on('load', _ => {
+        Ocultar();
+    });
+
+
+    const SuccessNotification = window.createNotification({
+        theme: 'success',
+        showDuration: 5000
+    });
+    const ErrorNotification = window.createNotification({
+        theme: 'success',
+        showDuration: 5000
+    });
+
+
+    const Ocultar = () => {
+        let Habilitados = document.getElementById('Habilitados');
+        let Inhabilitados = document.getElementById('Inhabilitados');
+
+
+        let divisiones = [Habilitados, Inhabilitados];
+
+        for (let i = 0; i < divisiones.length; i++) {
+            divisiones[i].style.display = 'none'
+        }
+    };
+
+    const CambioPestaña = (ref) => {
+        Ocultar();
+        let Button = document.getElementById(ref);
+        Button.style.display = "block";
+    };
+
+
+    //Abrir modal
+    $('#ButtonModal').on('click', () => {
+        $('#modalForm').modal('show');
+    });
+
+
+    const ActualizarLista = (values) => {
+        $("#table_id > tbody:last-child")
+            .append(`
+                               <tr>
+                                <td>${values.nombreFormulario}</td>
+                                <td><a href="${values.urlFormulario}" class="btn btn-warning btn-lg active" role="button" aria-pressed="true"  data-toggle="tooltip" data-placement="right" title="Ir al formulario"><i class="fa fa-eye"></a></td>
+                                <td><a href="${values.urlRespuestas}" class="btn btn-success btn-lg active" role="button" aria-pressed="true"  data-toggle="tooltip" data-placement="right" title="Ver Resultados"><i class="fa fa-table"></i></a></td
+                                <td>
+                                <button class="btn btn-outline-info btn-lg" id="BtnEditar" value="${values.pk}">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                &nbsp;
+                                <button class="btn btn-outline-danger btn-lg" id="BtnInhablitar" value="${values.pk}">
+                                    <i class="fa fa-trash-o"></i>
+                                </button>
+                                 </td>
+                               </tr>`);
+
+    };
+
+    //Formulario de registro con ajax
+    $('#formulario').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "{% url 'api:newForm' %}",
+            data: {
+                nombreFormulario: $('#nombreFormulario').val(),
+                urlFormulario: $('#urlFormulario').val(),
+                urlRespuestas: $('#urlRespuestas').val(),
+                descripcion: $('#descripcion').val(),
+                dataType: "json",
+                csrfmiddlewaretoken: '{{csrf_token}}'
+            },
+
+            success: function (data) {
+
+                let {message, error, values} = data;
+
+                if (message) {
+                    ActualizarLista(values);
+                    SuccessNotification({message: 'Registro exitoso!'});
+                    $('#modalForm').modal('hide');
+                }
+                if (error) {
+                    ErrorNotification({message: error});
+                }
+            },
+        });
+    });
+
+
+    const Inhabilitar = (id) => {
+
+        $.ajax({
+            url: "{% url 'api:inhabilitarFormulario' %}",
+            data: {id: id, csrfmiddlewaretoken: '{{csrf_token}}'},
+            dataType: 'json',
+            type: "POST",
+            success: (data) => {
+                SuccessNotification({message: data.message})
+            }
+        })
+    };
+
+    const Editar = (id) => {
+
+        $.ajax({
+            url: "{% url 'api:inhabilitarFormulario' %}", data: {'id': id}, dataType: 'json',
+            success: (data) => {
+                SuccessNotification({message: data})
+            }
+        })
+    };
+
+
+</script>
+</html>

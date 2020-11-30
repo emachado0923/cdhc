@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+{% block Head %}
+    <head>
+        <meta charset="UTF-8">
+        <title>H&B</title>
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'bootstrap/darkly/bootstrap.min.css' %}">
+    </head>
+{% endblock %}
+
+<body>
+{% include 'navbar/navbar.html' %}
+{% block content %}
+
+{% endblock %}
+</body>
+{% block javascript %}
+    <script src="{% static 'scripts/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script>
+
+        let fecha = new Date();
+        let fechaActual = document.getElementById('fechaActual');
+
+        fechaActual.innerHTML = fecha.toLocaleDateString();
+    </script>
+
+{% endblock %}
+
+</html>
