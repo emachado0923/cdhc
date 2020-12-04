@@ -16,15 +16,16 @@
 {% include 'navbar/navbar.html' %}
 
 <div class="d-flex justify-content-center mt-3 pa-5 ">
-    <div class="card card-lg text-white bg-secondary mb-3 w-80" style="max-width: 80rem;">
-        <div class="card-header">
-            <h3>
-                Usuarios de Facebook
-            </h3>
-        </div>
+    <div id="overflow_table">
+        <div class="card card-lg text-white bg-secondary mb-3 w-80" style="max-width: 80rem;">
+            <div class="card-header">
+                <h3>
+                    Usuarios de Facebook
+                </h3>
+            </div>
 
-        <div class="card-body">
-            <div id="overflow_table">
+            <div class="card-body">
+
                 <table class="table table-responsive-lg" id="table_id">
                     <thead class="thead-dark">
                     <tr>
@@ -95,15 +96,5 @@
 <script src="{% static 'scripts/jquery/jquery.min.js' %}"></script>
 <script src="{% static 'bootstrap/js/popper.min.js' %}"></script>
 <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-<script>
 
-    $('#overflow_table').css({
-        'padding': '15px',
-        'width': '100%',
-        'height': '35%',
-        'overflow': 'scroll',
-        'border': '1px solid #ccc'
-    })
-
-</script>
 </html>
