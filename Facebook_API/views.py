@@ -2,12 +2,13 @@ from datetime import date
 
 import facebook
 import pandas as pd
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.http import JsonResponse
 from django.shortcuts import redirect
-from django.contrib.auth import logout
 from django.views.generic import TemplateView, ListView
-from django.contrib.auth.decorators import login_required
+
 from Facebook_API.forms import GoogleForms
 from Facebook_API.models import User_Facebook, Resultados, Formularios
 
@@ -16,6 +17,7 @@ Dia_de_hoy = date.today()
 
 def GoogleData(values):
     # Leemos la url con el contenido de GoogleShet.
+    global UsuarioCorreo
     Results = pd.read_csv(f"{values}/export?format=csv")
 
     # columnas del excel
@@ -45,35 +47,63 @@ def GoogleData(values):
 
     }, inplace=True)
 
-    # cada variable contiene los resultados de cada columna.
-    Timestamp = df1['Timestamp']
-    correo = df1['correo']
-    genero = df1['genero']
-    edad = df1['edad']
-    Tipo_baldosa = df1['Tipo_baldosa']
-    Tipo_Salpicadero = df1['Tipo_Salpicadero']
-    Tipo_Bano = df1['Tipo_Bano']
-    Tipo_Sala = df1['Tipo_Sala']
+    # eliminar valores repetidos en dataframe
+    droped = df1.drop_duplicates(subset="correo", keep="last")
+    # Traer los correos del dataframe
+    correo = droped['correo']
+    # Recorrer variable con los correos para filtrar
+    for cor in correo:
+        # Consulta en base de datos para traer el id del usuario
+        UsuarioCorreo = User_Facebook.objects.filter(email__exact=cor).exclude(email__isnull=True).values()
+        for us in UsuarioCorreo:
+            # Buscar si el correo se encuentra en el dataframe
+            val = df1[(df1['correo'] == us['email'])]
+            # valores unicos de la consulta
+            usCorreo = val['correo']
+            usTimestamp = val['Timestamp']
+            usGenero = val['genero']
+            usEdad = val['edad']
+            usTipo_baldosa = val['Tipo_baldosa']
+            usTipo_Salpicadero = val['Tipo_Salpicadero']
+            usTipo_Bano = val['Tipo_Bano']
+            usTipo_Sala = val['Tipo_Sala']
 
-    for TI, CO, GE, ED, TBAL, TSALPI, TBANO, TSALA in zip(Timestamp, correo, genero, edad, Tipo_baldosa,
-                                                          Tipo_Salpicadero, Tipo_Bano, Tipo_Sala):
-        print(CO)
-        UsuarioRespuesta = User_Facebook.objects.get(email=CO)
+            # varibles globales para almacenar datos
+            global CorreoDT, Tiempo, Genero, Edad, TPB, TPS, TPBN, TPSL
 
-        newResult = Resultados(
-            Usuario_id=UsuarioRespuesta.pk,
-            Timestamp=TI,
-            correo=CO,
-            genero=GE,
-            edad=ED,
-            Tipo_baldosa=TBAL,
-            Tipo_Salpicadero=TSALPI,
-            Tipo_Baño=TBANO,
-            Tipo_Sala=TSALA,
-        )
-        # newResult.save()
+            # recorrer cada variable con cada uno de los valores de cada consulta
+            for co in usCorreo.to_list():
+                CorreoDT = co
+            for ti in usTimestamp.to_list():
+                Tiempo = ti
+            for gen in usGenero.to_list():
+                Genero = gen
+            for ed in usEdad.to_list():
+                Edad = ed
+            for tpb in usTipo_baldosa.to_list():
+                TPB = tpb
+            for tps in usTipo_Salpicadero.to_list():
+                TPS = tps
+            for tpbn in usTipo_Bano.to_list():
+                TPBN = tpbn
+            for tpsl in usTipo_Sala.to_list():
+                TPSL = tpsl
 
-        return print('CO')
+            # Guardar los resultados en la base de datos
+            newData = Resultados(
+                Usuario_id=us['id'],
+                correo=CorreoDT,
+                Timestamp=Tiempo,
+                genero=Genero,
+                edad=Edad,
+                Tipo_baldosa=TPB,
+                Tipo_Salpicadero=TPS,
+                Tipo_Baño=TPBN,
+                Tipo_Sala=TPSL,
+            )
+            newData.save()
+
+    return print('CO')
 
 
 def userDetails(request):
@@ -121,6 +151,7 @@ def userDetails(request):
         # Cuando los datos se almacenen sera redireccionado al formulario de google.
     return redirect('api:campañas')
 
+
 @login_required
 def ListForms(request):
     FormID = request.POST.get('FormID')
@@ -135,6 +166,7 @@ def ListForms(request):
         'message': 'Guardado con exito'
     }
     return JsonResponse(data)
+
 
 @login_required
 def InsertarFormulario(request):
@@ -162,6 +194,7 @@ def InsertarFormulario(request):
             }
             return JsonResponse(response)
 
+
 @login_required
 def InhabilitarFormulario(request):
     FormID = request.POST.get('id')
@@ -180,6 +213,7 @@ def InhabilitarFormulario(request):
             'message': 'Formulario Habilitado'
         }
     return JsonResponse(response)
+
 
 def Logout(request):
     logout(request)

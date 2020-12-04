@@ -22,64 +22,71 @@
                 Usuarios de Facebook
             </h3>
         </div>
-        <div class="card-body">
-            <table class="table" id="table_id">
-                <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Foto Perfil</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Nombre Usuario</th>
-                    <th scope="col">Genero</th>
-                    <th scope="col">Rango de Edad</th>
-                    <th scope="col">Tipo de Baldosa</th>
-                    <th scope="col">Tipo Salpicadero</th>
-                    <th scope="col">Tipo de Baño</th>
-                    <th scope="col">Tipo de Sala</th>
-                </tr>
-                </thead>
-                <!--Registros de la tabla-->
-                <tbody id="results">
-                {% if object_list %}
-                    {% for fb in object_list %}
-                        <tr>
-                            <td>
-                                <img src="{{ fb.Usuario.picture }}" alt="">
-                            </td>
-                            <td>
-                                {{ fb.Usuario.email }}
-                            </td>
-                            <td>
-                                {{ fb.Usuario.name }}
-                            </td>
-                            <td>
-                                {{ fb.genero }}
-                            </td>
-                            <td>
-                                {{ fb.edad }}
-                            </td>
-                            <td>
-                                {{ fb.Tipo_baldosa }}
-                            </td>
-                            <td>
-                                {{ fb.Tipo_Salpicadero }}
-                            </td>
-                            <td>
-                                {{ fb.Tipo_Baño }}
-                            </td>
-                            <td>
-                                {{ fb.Tipo_Sala }}
-                            </td>
 
-                        </tr>
-                    {% endfor %}
-                {% else %}
-                    <div class="alert alert-dismissible alert-primary">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        <strong>Atención!</strong> Lista Vacia
-                    </div>
-                {% endif %}
-                </tbody>
-            </table>
+        <div class="card-body">
+            <div id="overflow_table">
+                <table class="table table-responsive-lg" id="table_id">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Foto Perfil</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Nombre Usuario</th>
+                        <th scope="col">Genero</th>
+                        <th scope="col">Rango de Edad</th>
+                        <th scope="col">Tipo de Baldosa</th>
+                        <th scope="col">Tipo Salpicadero</th>
+                        <th scope="col">Tipo de Baño</th>
+                        <th scope="col">Tipo de Sala</th>
+                    </tr>
+                    </thead>
+                    <!--Registros de la tabla-->
+
+                    <tbody id="results">
+
+                    {% if object_list %}
+                        {% for fb in object_list %}
+
+                            <tr>
+                                <td>
+                                    <img src="{{ fb.Usuario.picture }}" alt="">
+                                </td>
+                                <td>
+                                    {{ fb.Usuario.email }}
+                                </td>
+                                <td>
+                                    {{ fb.Usuario.name }}
+                                </td>
+                                <td>
+                                    {{ fb.genero }}
+                                </td>
+                                <td>
+                                    {{ fb.edad }}
+                                </td>
+                                <td>
+                                    {{ fb.Tipo_baldosa }}
+                                </td>
+                                <td>
+                                    {{ fb.Tipo_Salpicadero }}
+                                </td>
+                                <td>
+                                    {{ fb.Tipo_Baño }}
+                                </td>
+                                <td>
+                                    {{ fb.Tipo_Sala }}
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+                    {% else %}
+                        <div class="alert alert-dismissible alert-primary">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong>Atención!</strong> Lista Vacia
+                        </div>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -88,4 +95,15 @@
 <script src="{% static 'scripts/jquery/jquery.min.js' %}"></script>
 <script src="{% static 'bootstrap/js/popper.min.js' %}"></script>
 <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+<script>
+
+    $('#overflow_table').css({
+        'padding': '15px',
+        'width': '100%',
+        'height': '35%',
+        'overflow': 'scroll',
+        'border': '1px solid #ccc'
+    })
+
+</script>
 </html>

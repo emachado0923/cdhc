@@ -18,13 +18,13 @@ class User_Facebook(models.Model):
 class Resultados(models.Model):
     Usuario = models.ForeignKey(User_Facebook, on_delete=models.CASCADE)
     correo = models.CharField(max_length=100, unique=False)
-    Timestamp = models.CharField(max_length=50, unique=False)
+    Timestamp = models.CharField(max_length=100, unique=False)
     genero = models.CharField(max_length=15, unique=False)
     edad = models.CharField(max_length=15, unique=False)
-    Tipo_baldosa = models.CharField(max_length=80, unique=False)
-    Tipo_Salpicadero = models.CharField(max_length=200, unique=False)
-    Tipo_Baño = models.CharField(max_length=100, unique=False)
-    Tipo_Sala = models.CharField(max_length=100, unique=False)
+    Tipo_baldosa = models.CharField(max_length=255, unique=False)
+    Tipo_Salpicadero = models.CharField(max_length=255, unique=False)
+    Tipo_Baño = models.CharField(max_length=255, unique=False)
+    Tipo_Sala = models.CharField(max_length=255, unique=False)
 
     def __str__(self):
         return self.correo
