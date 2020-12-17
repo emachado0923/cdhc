@@ -87,10 +87,10 @@ WSGI_APPLICATION = 'HabitatYConstruccion.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'habitat',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
+        'NAME': 'buxqj0uf38sflhmaojsa',
+        'USER': 'uwqjcnvqwm1alovq',
+        'PASSWORD': 'HDJMfw9MwIY448NxPTSa',
+        'HOST': 'buxqj0uf38sflhmaojsa-mysql.services.clever-cloud.com',
         'PORT': '3306',
         'OPTIONS': {
             'sql_mode': 'traditional',
@@ -125,7 +125,7 @@ AUTHENTICATION_BACKENDS = [
 SOCIAL_AUTH_FACEBOOK_KEY = '939313369811071'
 SOCIAL_AUTH_FACEBOOK_SECRET = '0eec847219f2715244d63405ff2702b6'
 
-LOGIN_REDIRECT_URL = '/api/admin/'
+LOGIN_REDIRECT_URL = '/api/home/'
 
 LOGOUT_REDIRECT_URL = '/api/inicio'
 
