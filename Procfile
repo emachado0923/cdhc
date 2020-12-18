@@ -1,1 +1,1 @@
-web:gunicorn HabitatYConstruccion.wsgi: application
+web:gunicorn HabitatYConstruccion.wsgi:application
