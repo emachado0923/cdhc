@@ -1,1 +1,1 @@
-web: gunicorn pythonpath HabitatYConstruccion HabitatYConstruccion.wsgi
+web:gunicorn HabitatYConstruccion.wsgi
