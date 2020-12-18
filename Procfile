@@ -1,1 +1,1 @@
-web:gunicorn HabitadYConstruccion.wsgi
+web:gunicorn HabitatYConstruccion.wsgi
